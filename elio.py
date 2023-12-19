@@ -60,7 +60,8 @@ BIN2 = pwmio.PWMOut(board.IO37)
 # DHT11 sensor declaration
 sensor = addafruit_dht.DHT11(board.IO15)
 
-
+# Matrix leds declaration
+matrix = neopixel.NeoPixel(board.IO2, 25, brightness=0.2, auto_write=False, pixel_order=neopixel.GRB)
 
 
 #--------------- INTERNAL VOLTAGES ---------------#
@@ -341,6 +342,28 @@ def getTemperature():
 # Get the humidity from the DHT11 sensor
 def getHumidity():
     return sensor.humidity
+
+#--------------- MATRIX LEDS ---------------#
+
+# Set the color of the matrix leds
+# Take a list of 25 colors (0 - 24) as parameter
+# Exemple de configuration des couleurs pour 25 LEDs
+#led_colors = [
+#    (255, 0, 0),   # LED 0 in red
+#    (0, 255, 0),   # LED 1 in green
+#    ...
+#]
+
+def setMatrixColors(led_colors):
+    for i, color in enumerate(led_colors):
+        if 0 <= i < 25:
+            matrix[i] = color
+    matrix.show()
+
+
+
+
+
 
 
 
