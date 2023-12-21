@@ -14,6 +14,7 @@ from analogio import AnalogIn
 import pwmio
 import busio
 import adafruit_dht
+from alphabet import character
 
 #--------------- PINS DECLARATION ---------------#
 
@@ -353,12 +354,120 @@ def getHumidity():
 #    (0, 255, 0),   # LED 1 in green
 #    ...
 #]
-
 def setMatrixColors(led_colors):
     for i, color in enumerate(led_colors):
         if 0 <= i < 25:
             matrix[i] = color
     matrix.show()
+
+
+# Turn off all the matrix leds
+def clearMatrix():
+    for i in range(25):
+        matrix[i] = (0, 0, 0)
+    matrix.show()
+
+# LOGO PICKER
+
+logoHeart = [
+    False, True, False, True, False,
+    True, False, True, False, True,
+    True, False, False, False, True,
+    False, True, False, True, False,
+    False, False, True, False, False]
+
+logoSmiley = [
+    False, True, False, True, False,
+    False, False, False, False, False,
+    False, True, False, True, False,
+    True, False, False, False, True,
+    False, True, True, True, False]
+
+logoSad = [
+    False, True, False, True, False,
+    False, False, False, False, False,
+    True, False, False, False, True,
+    False, True, False, True, False,
+    False, False, True, False, False]
+
+logoArrowUp = [
+    False, False, True, False, False,
+    False, True, True, True, False,
+    True, False, True, False, True,
+    False, False, True, False, False,
+    False, False, True, False, False]
+
+logoArrowDown = [
+    False, False, True, False, False,
+    False, False, True, False, False,
+    True, False, True, False, True,
+    False, True, True, True, False,
+    False, False, True, False, False]
+
+logoArrowLeft = [
+    False, False, True, False, False,
+    False, True, False, False, False,
+    True, True, True, True, True,
+    False, True, False, False, False,
+    False, False, True, False, False]
+
+logoArrowRight = [
+    False, False, True, False, False,
+    False, False, False, True, False,
+    True, True, True, True, True,
+    False, False, False, True, False,
+    False, False, True, False, False]
+
+logoCross = [
+    True, False, False, False, True,
+    False, True, False, True, False,
+    False, False, True, False, False,
+    False, True, False, True, False,
+    True, False, False, False, True]
+
+logoCheck = [
+    False, False, False, False, True,
+    False, False, False, True, False,
+    True, False, True, False, False,
+    False, True, False, False, False,
+    False, False, False, False, False]
+
+# Set the color of the logo in the matrix leds
+# Take a color as parameter (255, 0, 0) for red ...
+def setMatrixLogo(color,logo):
+    for i, led in enumerate(logo):
+        if led:
+            matrix[i] = color
+        matrix.show()
+
+
+m_matrix = [
+    [0, 1, 2, 3, 4],
+    [5, 6, 7, 8, 9],
+    [10, 11, 12, 13, 14],
+    [15, 16, 17, 18, 19],
+    [20, 21, 22, 23, 24]
+]
+
+# scroll a text on the matrix leds
+def scrollText(text, color, speed=0.1):
+    for char in text:
+        if char in character:
+            for offset in range(5):  # 5 columns for the appearance of the character
+                for x in range(5):  #
+                    for y in range(5):
+                        # Calculate the column position of the character to display
+                        char_col = y + offset - 4
+                        idx = m_matrix[x][y]
+                        if 0 <= char_col < 5:
+                            # Set the LED color if the character pixel is 1 (on), else turn it off
+                            matrix[idx] = color if character[char][x][char_col] == 1 else (0, 0, 0)
+                        else:
+                            # Turn off the LED if the character pixel is 0 (off)
+                            matrix[idx] = (0, 0, 0)
+
+                matrix.show()  # Update the LED matrix display
+                time.sleep(speed)
 
 
 
