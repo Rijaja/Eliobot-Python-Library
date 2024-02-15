@@ -450,11 +450,11 @@ m_matrix = [
 ]
 
 # scroll a text on the matrix leds
-def scrollText(text, color, speed=0.1):
+def scrollMatrixText(text, color, speed=0.1):
     for char in text:
         if char in character:
             for offset in range(5):  # 5 columns for the appearance of the character
-                for x in range(5):  #
+                for x in range(5):
                     for y in range(5):
                         # Calculate the column position of the character to display
                         char_col = y + offset - 4

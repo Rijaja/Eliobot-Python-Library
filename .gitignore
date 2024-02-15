@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python,circuitpython,intellij,vs
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,circuitpython,intellij,vs
 
+.idea/*
+.idea
+
 ### CircuitPython ###
 .Trashes
 .metadata_never_index
