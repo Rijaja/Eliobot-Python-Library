@@ -58,13 +58,6 @@ AIN2 = pwmio.PWMOut(board.IO38)
 BIN1 = pwmio.PWMOut(board.IO35)
 BIN2 = pwmio.PWMOut(board.IO37)
 
-# DHT11 sensor declaration
-sensor = addafruit_dht.DHT11(board.IO15)
-
-# Matrix leds declaration
-matrix = neopixel.NeoPixel(board.IO2, 25, brightness=0.2, auto_write=False, pixel_order=neopixel.GRB)
-
-
 #--------------- INTERNAL VOLTAGES ---------------#
 
 # Measure the battery voltage
@@ -337,11 +330,11 @@ def followLine():
 #--------------- DHT11 ---------------#
 
 # Get the temperature from the DHT11 sensor
-def getTemperature():
+def getTemperature(sensor):
     return sensor.temperature
 
 # Get the humidity from the DHT11 sensor
-def getHumidity():
+def getHumidity(sensor):
     return sensor.humidity
 
 #--------------- MATRIX LEDS ---------------#
@@ -354,7 +347,7 @@ def getHumidity():
 #    (0, 255, 0),   # LED 1 in green
 #    ...
 #]
-def setMatrixColors(led_colors):
+def setMatrixColors(matrix, led_colors):
     for i, color in enumerate(led_colors):
         if 0 <= i < 25:
             matrix[i] = color
@@ -362,7 +355,7 @@ def setMatrixColors(led_colors):
 
 
 # Turn off all the matrix leds
-def clearMatrix():
+def clearMatrix(matrix):
     for i in range(25):
         matrix[i] = (0, 0, 0)
     matrix.show()
@@ -434,7 +427,7 @@ logoCheck = [
 
 # Set the color of the logo in the matrix leds
 # Take a color as parameter (255, 0, 0) for red ...
-def setMatrixLogo(color,logo):
+def setMatrixLogo(matrix, color,logo):
     for i, led in enumerate(logo):
         if led:
             matrix[i] = color
@@ -450,7 +443,7 @@ m_matrix = [
 ]
 
 # scroll a text on the matrix leds
-def scrollMatrixText(text, color, speed=0.1):
+def scrollMatrixText(matrix, text, color, speed=0.1):
     for char in text:
         if char in character:
             for offset in range(5):  # 5 columns for the appearance of the character
